@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rei da Mesa</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-root">
+    <section id="menuScreen" class="screen menu-screen" aria-label="Menu principal do jogo Rei da Mesa">
+      <div class="menu-bg" aria-hidden="true"></div>
+      <div class="menu-overlay" aria-hidden="true"></div>
+
+      <header class="top-strip" aria-label="Barra principal">
+        <div class="top-left">
+          <button class="top-btn" id="accountBtn" type="button" aria-label="Abrir conta do jogador">
+            <span class="btn-icon" aria-hidden="true">♙</span><span>Conta</span>
+          </button>
+        </div>
+        <div class="top-center">
+          <div class="chips-pill" id="menuChipsPill" aria-label="Saldo de fichas fictícias">
+            <span class="coin-icon" aria-hidden="true">●</span><strong id="menuChips">500</strong><span>Fichas</span>
+          </div>
+        </div>
+        <div class="top-right-actions">
+          <button class="top-btn" id="historyBtn" type="button" aria-label="Abrir histórico de partidas">
+            <span class="btn-icon" aria-hidden="true">◴</span><span>Histórico</span>
+          </button>
+          <button class="top-btn" id="settingsBtn" type="button" aria-label="Abrir configurações">
+            <span class="btn-icon" aria-hidden="true">⚙</span><span>Configurações</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="menu-center-wrap">
+        <img src="assets/logo/logo-rei-da-mesa.png" alt="Logo Rei da Mesa" class="main-logo" />
+        <div class="hero-copy">
+          <p class="eyebrow">bilhar 8-ball • fichas fictícias • modo casual</p>
+          <h1>Escolha seu modo</h1>
+          <p>Jogue partidas rápidas, desbloqueie tacos e evolua seu inventário.</p>
+        </div>
+
+        <div class="main-actions-grid" role="group" aria-label="Modos de jogo">
+          <button class="hero-option blue-option active" id="vsBotBtn" type="button" aria-label="Selecionar jogar contra máquina">
+            <span class="icon" aria-hidden="true">◎</span>
+            <span>Jogar contra<br>Máquina</span>
+            <small>Treine contra a IA</small>
+          </button>
+          <button class="hero-option gold-option" id="betBotBtn" type="button" aria-label="Selecionar partida com fichas fictícias contra bot difícil">
+            <span class="pro-badge">PRO</span>
+            <span class="icon" aria-hidden="true">●</span>
+            <span>Apostar Fichas<br>VS Bot</span>
+            <small>Somente bot Difícil</small>
+          </button>
+          <button class="hero-option blue-option" id="twoPlayersBtn" type="button" aria-label="Selecionar modo dois jogadores local">
+            <span class="icon" aria-hidden="true">♙♙</span>
+            <span>2 Jogadores</span>
+            <small>Partida local</small>
+          </button>
+        </div>
+
+        <div class="menu-panel card" id="modePanel">
+          <div class="panel-row" id="difficultyRow">
+            <div>
+              <div class="row-title">Dificuldade</div>
+              <p class="panel-note" id="difficultyDescription">Fácil: ideal para treinar, o bot erra mais e joga simples.</p>
+            </div>
+            <div class="choice-group" id="difficultyGroup">
+              <button class="choice-btn active" data-difficulty="easy" type="button" aria-label="Dificuldade fácil">Fácil</button>
+              <button class="choice-btn" data-difficulty="medium" type="button" aria-label="Dificuldade média">Médio</button>
+              <button class="choice-btn" data-difficulty="hard" type="button" aria-label="Dificuldade difícil">Difícil</button>
+            </div>
+          </div>
+          <div class="panel-row hidden" id="betRow">
+            <div>
+              <div class="row-title">Aposta de fichas</div>
+              <p class="panel-note">Fichas são apenas economia fictícia do jogo. Não há dinheiro real.</p>
+            </div>
+            <div class="choice-group" id="betGroup">
+              <button class="choice-btn active" data-bet="25" type="button">25</button>
+              <button class="choice-btn" data-bet="50" type="button">50</button>
+              <button class="choice-btn" data-bet="100" type="button">100</button>
+              <button class="choice-btn" data-bet="250" type="button">250</button>
+            </div>
+          </div>
+          <div class="quick-guide">
+            <strong>Como jogar:</strong> puxe a partir da bola branca para mirar e solte para tacar. Com bola na mão, toque em uma área livre da mesa.
+          </div>
+          <button class="start-btn" id="startBtn" type="button">Começar Partida</button>
+        </div>
+
+        <nav class="lower-actions" aria-label="Ações secundárias">
+          <button class="slim-btn" id="inventoryBtn" type="button" aria-label="Abrir inventário de tacos">Inventário</button>
+          <button class="slim-btn" id="shopBtn" type="button" aria-label="Abrir loja de tacos">Loja de Tacos</button>
+          <button class="slim-btn" id="rulesBtn" type="button" aria-label="Abrir regras da bola oito">Regras</button>
+          <button class="slim-btn danger-text" id="resetBtn" type="button" aria-label="Resetar progresso do jogo">Resetar Progresso</button>
+        </nav>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen game-screen hidden" aria-label="Tela da partida">
+      <div class="orientation-hint">Para jogar melhor no celular, vire a tela para o modo paisagem.</div>
+      <div class="game-wrapper">
+        <header class="game-header card">
+          <div class="game-header-left">
+            <button class="round-btn" id="backMenuBtn" type="button" aria-label="Voltar ao menu">☰</button>
+            <button class="round-btn" id="gameAccountBtn" type="button" aria-label="Abrir conta">♙</button>
+            <button class="round-btn" id="restartMatchBtn" type="button" aria-label="Reiniciar partida atual">R</button>
+            <div class="table-mode" id="modeLabel">VS Bot • Fácil</div>
+          </div>
+          <div class="game-header-center">
+            <div class="player-chip active-turn" id="player0Chip">
+              <img src="assets/avatars/avatar-1.png" alt="Avatar do Jogador 1" id="player0AvatarImg">
+              <div>
+                <strong id="player0Name">Você</strong>
+                <small id="player0Group">Grupo aberto</small>
+              </div>
+            </div>
+            <div class="turn-box">
+              <span>Vez</span>
+              <strong id="turnLabel">Jogador 1</strong>
+              <small id="turnTimer">30s</small>
+            </div>
+            <div class="player-chip" id="player1Chip">
+              <div>
+                <strong id="player1Name">Bot Fácil</strong>
+                <small id="player1Group">Grupo aberto</small>
+              </div>
+              <img src="assets/avatars/avatar-2.png" alt="Avatar do Jogador 2" id="player1AvatarImg">
+            </div>
+          </div>
+          <div class="game-header-right">
+            <div class="chips-pill small"><span class="coin-icon" aria-hidden="true">●</span><strong id="gameChips">500</strong></div>
+            <button class="round-btn" id="gameHistoryBtn" type="button" aria-label="Abrir histórico">◴</button>
+          </div>
+        </header>
+
+        <div class="game-body">
+          <div class="game-main-area card">
+            <div class="canvas-toolbar">
+              <div class="toolbar-badge" id="statusBadge">Mesa aberta</div>
+              <div class="toolbar-badge cue-name" id="cueNameBadge">Taco Básico</div>
+              <div class="toolbar-badge tip" id="contextTip">Dica: use a linha pontilhada para prever a batida.</div>
+            </div>
+            <div class="canvas-holder" id="canvasHolder">
+              <canvas id="gameCanvas" width="1400" height="840" aria-label="Mesa de bilhar em canvas">Seu navegador não suporta Canvas. Use um navegador moderno para jogar Rei da Mesa.</canvas>
+            </div>
+          </div>
+
+          <aside class="game-side-panel card" aria-label="Painel de controle da partida">
+            <div class="side-section power-section">
+              <div class="side-title">Potência</div>
+              <div class="power-vertical" aria-hidden="true"><div id="powerFill"></div></div>
+              <small>Quanto mais longe puxar, mais forte será a tacada.</small>
+            </div>
+            <div class="side-section spin-section">
+              <div class="side-title">Efeito</div>
+              <div class="spin-control" id="spinControl" aria-label="Controle visual de efeito da bola branca">
+                <div class="spin-dot" id="spinDot"></div>
+              </div>
+              <small>Controle visual de efeito. Mantido simples para jogabilidade casual.</small>
+            </div>
+            <div class="side-section">
+              <div class="side-title">Bolas restantes</div>
+              <div class="balls-grid" id="remainingBalls"></div>
+            </div>
+            <div class="side-section">
+              <div class="side-title">Tacos</div>
+              <div class="cue-mini-list" id="cueList"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="accountDialog" class="modal">
+    <div class="modal-card large-card">
+      <div class="modal-header">
+        <h2>Conta</h2>
+        <button class="close-btn" data-close="accountDialog" type="button" aria-label="Fechar conta">✕</button>
+      </div>
+      <div class="account-grid">
+        <div class="card inner-card account-profile-card">
+          <h3>Perfil do Jogador</h3>
+          <div class="profile-editor">
+            <label class="setting-row compact-row">
+              <span>Nome</span>
+              <input type="text" id="playerNameInput" maxlength="18" placeholder="Você" aria-label="Nome do jogador">
+            </label>
+            <div class="account-summary-row">
+              <div class="summary-pill">Fichas: <strong id="accountChips">500</strong></div>
+              <div class="summary-pill">Taco atual: <strong id="accountSelectedCue">Taco Básico</strong></div>
+            </div>
+          </div>
+          <h3>Avatar</h3>
+          <div class="avatar-grid" id="avatarGrid"></div>
+        </div>
+        <div class="card inner-card">
+          <h3>Inventário de tacos</h3>
+          <p class="modal-help">Aqui ficam os tacos desbloqueados ou comprados. Cada taco melhora força e precisão de mira.</p>
+          <div class="inventory-list" id="inventoryList"></div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="shopDialog" class="modal">
+    <div class="modal-card large-card">
+      <div class="modal-header">
+        <h2>Loja de Tacos</h2>
+        <button class="close-btn" data-close="shopDialog" type="button" aria-label="Fechar loja">✕</button>
+      </div>
+      <p class="modal-help">Compre tacos usando apenas fichas fictícias do jogo. Não há dinheiro real.</p>
+      <div class="shop-list" id="shopList"></div>
+    </div>
+  </dialog>
+
+  <dialog id="historyDialog" class="modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Histórico</h2>
+        <div class="modal-actions">
+          <button class="mini-action-btn" id="clearHistoryBtn" type="button">Limpar</button>
+          <button class="close-btn" data-close="historyDialog" type="button" aria-label="Fechar histórico">✕</button>
+        </div>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+  </dialog>
+
+  <dialog id="settingsDialog" class="modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Configurações</h2>
+        <button class="close-btn" data-close="settingsDialog" type="button" aria-label="Fechar configurações">✕</button>
+      </div>
+      <div class="settings-list">
+        <label class="setting-row">
+          <span>Volume</span>
+          <input type="range" id="volumeSlider" min="0" max="100" value="55" aria-label="Volume">
+        </label>
+        <label class="setting-row">
+          <span>Sensibilidade da mira</span>
+          <input type="range" id="aimSensitivitySlider" min="60" max="150" value="100" aria-label="Sensibilidade da mira">
+        </label>
+        <label class="setting-row">
+          <span>Assistência de mira</span>
+          <input type="checkbox" id="aimAssistToggle" checked aria-label="Assistência de mira">
+        </label>
+        <label class="setting-row">
+          <span>Mesa rápida</span>
+          <input type="checkbox" id="fastTableToggle" aria-label="Mesa rápida">
+        </label>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="rulesDialog" class="modal">
+    <div class="modal-card large-card">
+      <div class="modal-header">
+        <h2>Regras da Bola 8</h2>
+        <button class="close-btn" data-close="rulesDialog" type="button" aria-label="Fechar regras">✕</button>
+      </div>
+      <ol class="rules-list">
+        <li>A mesa começa aberta. O grupo é definido pela primeira bola lisa ou listrada encaçapada legalmente.</li>
+        <li>Bolas 1 a 7 são lisas. Bolas 9 a 15 são listradas. A bola 8 só pode ser encaçapada no final.</li>
+        <li>Após definir o grupo, você deve acertar primeiro uma bola do seu grupo.</li>
+        <li>Se encaçapar uma bola do seu grupo em jogada legal, continua jogando.</li>
+        <li>É falta encaçapar a branca, não encostar em nenhuma bola ou atingir primeiro uma bola errada.</li>
+        <li>Depois de uma falta, o adversário recebe bola na mão.</li>
+        <li>Encaçapar a bola 8 antes da hora perde o jogo.</li>
+      </ol>
+    </div>
+  </dialog>
+
+  <dialog id="resetConfirmDialog" class="modal">
+    <div class="modal-card confirm-card">
+      <div class="modal-header">
+        <h2>Tem certeza?</h2>
+        <button class="close-btn" data-close="resetConfirmDialog" type="button" aria-label="Cancelar reset">✕</button>
+      </div>
+      <p class="confirm-text">Isso vai apagar fichas, histórico, nome, taco equipado e desbloqueios locais.</p>
+      <label class="reset-check"><input type="checkbox" id="resetAgree"> Entendo que perderei minhas fichas e itens locais.</label>
+      <div class="confirm-actions">
+        <button class="slim-btn" data-close="resetConfirmDialog" type="button">Cancelar</button>
+        <button class="slim-btn danger" id="confirmResetBtn" type="button" disabled>Sim, resetar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="messageDialog" class="modal">
+    <div class="modal-card confirm-card">
+      <div class="modal-header">
+        <h2 id="messageTitle">Aviso</h2>
+        <button class="close-btn" data-close="messageDialog" type="button" aria-label="Fechar aviso">✕</button>
+      </div>
+      <p class="confirm-text" id="messageText">Mensagem do jogo.</p>
+      <div class="confirm-actions">
+        <button class="start-btn" data-close="messageDialog" type="button">Entendi</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="tutorialDialog" class="modal">
+    <div class="modal-card large-card tutorial-card">
+      <div class="modal-header">
+        <h2>Tutorial rápido</h2>
+        <button class="close-btn" data-close="tutorialDialog" type="button" aria-label="Fechar tutorial">✕</button>
+      </div>
+      <div class="tutorial-grid">
+        <div><strong>1. Mire</strong><p>Arraste a partir da bola branca. A linha pontilhada mostra a direção.</p></div>
+        <div><strong>2. Controle força</strong><p>Quanto mais longe puxar, maior a potência da tacada.</p></div>
+        <div><strong>3. Bola 8</strong><p>Derrube todas as bolas do seu grupo antes de encaçapar a 8.</p></div>
+      </div>
+      <button class="start-btn" id="tutorialOkBtn" type="button">Começar</button>
+    </div>
+  </dialog>
+
+  <dialog id="endDialog" class="modal">
+    <div class="modal-card end-card">
+      <div class="trophy">★</div>
+      <h2 id="endTitle">Vitória!</h2>
+      <p id="endText">Você venceu a partida.</p>
+      <div class="end-actions">
+        <button class="start-btn" id="playAgainBtn" type="button">Jogar Novamente</button>
+        <button class="slim-btn" id="endMenuBtn" type="button">Voltar ao Menu</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="true"></div>
+  <script src="script.js"></script>
+</body>
+</html>
