@@ -1400,6 +1400,59 @@
     draw();
     persist();
   }
+let secretCode = "";
+const CEO_CODE = "reirei";
+let ceoMode = false;
 
+document.addEventListener("keydown", (e) => {
+  secretCode += e.key.toLowerCase();
+
+  if (secretCode.length > CEO_CODE.length) {
+    secretCode = secretCode.slice(-CEO_CODE.length);
+  }
+
+  if (secretCode === CEO_CODE) {
+    toggleCEOMode();
+    secretCode = "";
+  }
+});
+
+function toggleCEOMode() {
+  if (!ceoMode) {
+    // ATIVAR
+    save.chips = 999999999;
+
+    save.botUnlocks.easy = true;
+    save.botUnlocks.medium = true;
+    save.botUnlocks.hard = true;
+
+    save.shopOwned = CUES
+      .filter(cue => cue.source === "shop")
+      .map(cue => cue.id);
+
+    selectedCue = "royal";
+    ceoMode = true;
+
+    alert("👑 MODO CEO ATIVADO");
+  } else {
+    // DESATIVAR
+    save.chips = 500; // ou valor que você quiser
+
+    save.botUnlocks.easy = false;
+    save.botUnlocks.medium = false;
+    save.botUnlocks.hard = false;
+
+    save.shopOwned = [];
+    selectedCue = "basic";
+    ceoMode = false;
+
+    alert("❌ MODO CEO DESATIVADO");
+  }
+
+  persist();
+  updateHUD();
+  renderShop();
+  renderInventories();
+}
   initialRender();
 })();
